@@ -6,6 +6,30 @@ When you want to sync multiple Google Calendars into one. Currently Google Calen
 
 This is useful for a collective Busy/Free Calendar or Google Home integration.
 
+## Why This Fork?
+
+This fork enhances the original project with the following improvements:
+
+**Privacy-Focused Event Naming**
+- All synced events now appear as "Nickname Busy" (e.g., "[Alice] Busy", "[Bob] Busy") instead of showing the actual event title
+- Original event titles are preserved in the event description for reference
+- Perfect for sharing calendars with privacy while still showing availability
+
+**Multiple Calendars Per Person**
+- Support for merging multiple calendars under a single nickname
+- Use an array of calendar IDs to consolidate personal, work, and other calendars
+- Example: `"[Alice]": ["alice-personal@gmail.com", "alice-work@gmail.com"]` shows all events as "[Alice] Busy"
+
+**Simplified Single-File Setup**
+- BatchRequest class merged into the main file for easier deployment
+- No need to manage multiple script files
+- Configuration variables at the top for quick editing
+
+**Enhanced Debugging**
+- Detailed console logging to troubleshoot sync issues
+- Shows exactly which calendars are being processed and how many events are found
+- Helps identify permission or configuration problems quickly
+
 ## Getting Starting
 
 1. Make sure every calendar you want sync is shared with the account that holds the shared calendar.
@@ -16,15 +40,19 @@ This is useful for a collective Busy/Free Calendar or Google Home integration.
 
 4. Replace everything in `Code.gs` with the contents of [SyncCalendarsIntoOne.gs].
 
-5. Create a new script file called `BatchRequests.gs` with the contents of [BatchRequests.gs]
+5. Update the configuration at the top of the file:
+   - `CALENDARS_TO_MERGE`: Set nicknames and calendar IDs
+     - Single calendar: `"[Name]": "calendar-id@gmail.com"`
+     - Multiple calendars: `"[Name]": ["cal1@gmail.com", "cal2@gmail.com"]`
+   - `CALENDAR_TO_MERGE_INTO`: Your shared calendar ID
+   - `SYNC_DAYS_IN_PAST` and `SYNC_DAYS_IN_FUTURE`: Adjust date range as needed
+   - Be sure to save.
 
-6. Update `calendarsToMerge`, `calendarToMergeInto`, `SYNC_DAYS_IN_PAST`, and `SYNC_DAYS_IN_FUTURE` variables. Be sure to save.
+6. Click the `Project Settings` Gear icon on the left panel. Check the `Show "appsscript.json" manifest file in editor`. Go back to code editor on the left, and update its content with [appsscript.json].
 
-7. Click the `Project Settings` Gear icon on the left panel. Check the `Show "appsscript.json" manifest file in editor`. Go back to code editor on the left, and update its content with [appsscript.json].
+7. Click `Run`. This will load the `Authorization required` window since it's your first time running the script. Click on `Review permissions` and give it permission to your account.
 
-8. Click `Run`. This will load the `Authorization required` window since it's your first time running the script. Click on `Review permissions` and give it permission to your account.
-
-9. Click on `Triggers` clock icon on the left panel to add a trigger. Click on `Add Trigger`.
+8. Click on `Triggers` clock icon on the left panel to add a trigger. Click on `Add Trigger`.
 
    - You have two choices, "Time-driven" or "From calendar".
    - Time-driven will run every X minutes/hours/etc. Use this if you have calendars that update frequently (more than 5-10 times in a 15 minute timespan)
@@ -47,7 +75,7 @@ This is useful for a collective Busy/Free Calendar or Google Home integration.
      - Click "Save"
      - Repeat these steps for every calendar you're merging _from_.
 
-10. Enjoy!
+9. Enjoy!
 
 ## Notes
 
@@ -67,7 +95,6 @@ MIT © [Ali Karbassi]
 [trigger-icon]: trigger.png
 [google apps scripts]: https://script.google.com/intro
 [synccalendarsintoone.gs]: ../SyncCalendarsIntoOne.gs
-[batchrequests.gs]: ../BatchRequests.gs
 [appsscript.json]: ../appsscript.json
 [quotas for google services]: https://developers.google.com/apps-script/guides/services/quotas
 [ifttt]: https://ifttt.com/
